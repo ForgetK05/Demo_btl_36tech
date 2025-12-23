@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+
   //lấy dữ liệu từ thẻ 
   const input = document.getElementById("search-input");
   const resultBox = document.getElementById("search-result");
@@ -10,10 +10,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function xuLyTiengViet(str) {
     return str
-      .normalize('NFD')             // normallize dùng để tách dấu : vd : kiên => k i e mũ n
-      .replace(/[\u0300-\u036f]/g, '') // xóa dấu :  k i e mũ n => k i e n
-      .replace(/đ/g, 'd')          
-      .replace(/Đ/g, 'D')           
+      .normalize('NFD')             // normallize dùng để tách dấu : vd : kiên => k i e ^ n
+      .replace(/[\u0300-\u036f]/g, '') // xóa dấu :  k i e ^ n => k i e n
+      .replace(/đ/g, 'd')   // xử lý đ sang d       
+      .replace(/Đ/g, 'D')   // xủ lý Đ sàn D        
       .toLowerCase()                
       .trim();                      
   }
@@ -22,15 +22,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // dùng vòng lặp để lấy dữ liệu từ thẻ 
   cards.forEach(card => {
-    const titleEl = card.querySelector(".info a");
-    const imgEl = card.querySelector("img");
+    const title_course = card.querySelector(".info a");
+    const img_course = card.querySelector("img");
 
 
     // lấy được dữ liệu thì đẩy nó vào mảng => mảng dùng push, set=> dùng add 
     courses.push({
-      title: titleEl.innerText.trim(), // trim cắt khoảng trắng 2 bên 
-      link: titleEl.getAttribute("href"),
-      image: imgEl.getAttribute("src")
+      title: title_course.innerText.trim(), // trim cắt khoảng trắng 2 bên 
+      link: title_course.getAttribute("href"),
+      image: img_course.getAttribute("src")
     });
   });
 
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const xulyKeyword = xuLyTiengViet(keyword);// dùng để xủ lý từ khóa người dùng nhập
       return xuLyTitle.includes(xulyKeyword); // trả về kết quả từ khóa người dùng nhập trùng với title include()
     });
-
+    // nếu không tìm thấy từ nào trùng mới khóa học thì 
     if (matched.length === 0) {
       resultBox.innerHTML = `
         <div class="search-empty">
@@ -57,10 +57,11 @@ document.addEventListener("DOMContentLoaded", function () {
       `;
     } else {
       matched.forEach(course => {
-        const item = document.createElement("a");
-        item.className = "search-result-item";
-        item.href = course.link; 
+        const item = document.createElement("a"); // tạo thẻ a 
+        item.className = "search-result-item"; // gắn class cho thẻ a đó
+        item.href = course.link; // gắn link của khóa học vado thẻ a 
 
+        // đây là nội dùng của dropdown sreach có định dạng ảnh + tên khóa 
         item.innerHTML = `
           <img src="${course.image}" alt="">
           <span>${course.title}</span>
@@ -76,10 +77,10 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Click ra ngoài thì ẩn
-  document.addEventListener("click", function (e) { // e là đối tượng click vào (thẻ html, a , div ,,,) closest thì thằng cha gần nhất 
-    // nếu đối tượng click vào không nằm trong thẻ cha thì không hiện dropdown của search !
+  document.addEventListener("click", function (e) { // e là đối tượng click vào (thẻ html, a , div ,,,) closest tìm thằng cha gần nhất 
+    // nếu đối tượng click vào không nằm trong thẻ cha(.search-wrapper) thì không hiện dropdown của search !
     if (!e.target.closest(".search-wrapper")) {
       resultBox.style.display = "none";
     }
   });
-});
+
