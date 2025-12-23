@@ -1,11 +1,23 @@
 
   //lấy dữ liệu từ thẻ 
-  const input = document.getElementById("search-input");
-  const resultBox = document.getElementById("search-result");
+  const input = document.getElementById("search-input");// đoạn này ở trong header 
+  const resultBox = document.getElementById("search-result"); // đoạn này ở trong header 
+    
+    // <form class="search" role="search" autocomplete="off">
+    //             <div class="search-wrapper">
+    //                 <input id="search-input" type="search" placeholder="Tìm kiếm khóa học, bài viết, video, ..."
+    //                     autocomplete="off">
 
-  const cards = document.querySelectorAll(".card_box");
+    //                 <button type="submit" class="search-btn">🔍</button>
 
-  //  tạo mảng lưu thẻ 
+    //                 <!-- dropdown kết quả -->
+    //                 <div class="search-result" id="search-result"></div>
+    //             </div>
+    //         </form>
+
+  const cards = document.querySelectorAll(".card_box");// đoạn này ở trong homepage.php nhá 
+
+  //  tạo mảng lưu thẻ của khóa học
   let courses = [];
 
   function xuLyTiengViet(str) {
@@ -15,7 +27,8 @@
       .replace(/đ/g, 'd')   // xử lý đ sang d       
       .replace(/Đ/g, 'D')   // xủ lý Đ sàn D        
       .toLowerCase()                
-      .trim();                      
+      .trim();  
+                         
   }
 
   // Lấy dữ liệu khóa học
@@ -83,4 +96,7 @@
       resultBox.style.display = "none";
     }
   });
+
+
+
 
