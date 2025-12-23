@@ -8,6 +8,16 @@ document.addEventListener("DOMContentLoaded", function () {
   //  tạo mảng lưu thẻ 
   let courses = [];
 
+  function xuLyTiengViet(str) {
+    return str
+      .normalize('NFD')             // normallize dùng để tách dấu : vd : kiên => k i e mũ n
+      .replace(/[\u0300-\u036f]/g, '') // xóa dấu :  k i e mũ n => k i e n
+      .replace(/đ/g, 'd')          
+      .replace(/Đ/g, 'D')           
+      .toLowerCase()                
+      .trim();                      
+  }
+
   // Lấy dữ liệu khóa học
 
   // dùng vòng lặp để lấy dữ liệu từ thẻ 
@@ -33,9 +43,11 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    const matched = courses.filter(course => // dùng filter để lọc  
-      course.title.toLowerCase().includes(keyword)
-    );
+    const matched = courses.filter(course => {
+      const xuLyTitle = xuLyTiengViet(course.title); // dùng để xử lý tiêu đề 
+      const xulyKeyword = xuLyTiengViet(keyword);// dùng để xủ lý từ khóa người dùng nhập
+      return xuLyTitle.includes(xulyKeyword); // trả về kết quả từ khóa người dùng nhập trùng với title include()
+    });
 
     if (matched.length === 0) {
       resultBox.innerHTML = `
